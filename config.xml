@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.example.tabulas"
+        version="1.0.0"
+        xmlns="http://www.w3.org/ns/widgets"
+        xmlns:cdv="http://cordova.apache.org/ns/1.0">
+
+    <!-- ───── App metadata ───── -->
+    <name>TabulasApp</name>
+    <description>Tabulas wrapped in Cordova WebView</description>
+    <author email="dev@tabulas.it" href="https://tabulas.vercel.app">Tabulas Dev</author>
+
+    <!-- ───── Your web site in the WebView ───── -->
+    <content src="https://tabulas.vercel.app" />
+
+    <!-- allow site + Azure AD endpoints -->
+    <allow-navigation href="https://tabulas.vercel.app/*" />
+    <allow-navigation href="https://login.microsoftonline.com/*" />
+    <access origin="*" />
+
+    <!-- ───── Plugins we need ───── -->
+    <!-- 1. open /authorize in the system browser -->
+    <plugin name="cordova-plugin-inappbrowser" spec="^6.0.0" />
+
+    <!-- 2. catch the tabulas://auth deep-link on both OSs -->
+    <plugin name="cordova-plugin-customurlscheme" spec="^5.0.2">
+        <variable name="URL_SCHEME"          value="tabulas" />
+        <variable name="URL_HOST"            value="auth"    />
+        <!-- Android extras so the host is enforced -->
+        <variable name="ANDROID_HOST"        value="auth"    />
+        <variable name="ANDROID_PATHPREFIX"  value="/"       />
+    </plugin>
+
+    <!-- (optional) splash-screen, icons … -->
+
+    <!-- ───── Android specific ───── -->
+    <platform name="android">
+        <!-- Let Cordova verify the deep-link -->
+        <preference name="AndroidLaunchMode" value="singleTask" />
+    </platform>
+
+    <!-- ───── iOS specific ─────  -->
+    <platform name="ios">
+        <!-- iOS 13+ requires a description for opening external sites -->
+        <edit-config target="NSAppTransportSecurity"
+                     file="*-Info.plist" mode="merge">
+            <dict>
+                <key>NSAllowsArbitraryLoads</key><true/>
+            </dict>
+        </edit-config>
+    </platform>
+</widget>
